@@ -1,5 +1,5 @@
 body {
-  background-color: lightgrey;
+  background-color: lightblue;
 }
 
 main {  display: grid;
@@ -22,7 +22,9 @@ div {
 
 .Title {
   grid-area: Title;
-  text-align: left;
+  text-align: center;
+  font-size: 100px;
+  color: black;
   padding: 50px;
 }
 
@@ -34,16 +36,22 @@ div {
 
 .pic1 {
   grid-area: pic1;
+  max-height: fit-content;
+  max-width: fit-content;
   padding: 5px;
 }
 
 .pic2 {
   grid-area: pic2;
+  max-height: fit-content;
+  max-width: fit-content;
   padding: 5px;
 }
 
 .pic3 {
   grid-area: pic3;
+  max-height: fit-content;
+  max-width: fit-content;
   padding: 5px;
 }
 
@@ -53,10 +61,19 @@ div {
 
 .text {
   grid-area: text;
+  font-size: 25px;
   padding: 100px;
 }
 
 .footer {
   grid-area: footer;
   padding: 50px;
+}
+
+#showResults {
+  display: none;
+}
+
+#results {
+  display: none;
 }
