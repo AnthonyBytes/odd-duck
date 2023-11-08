@@ -52,7 +52,7 @@ function renderPictures(){
   state.allPictures[picture3].views++;
 
 }
-
+//working to get click to keep count 
 function handleClick(event) {
   let pictureName = event.target.alt;
   for (let i = 0; i < state.allPictures.length; i++) {
