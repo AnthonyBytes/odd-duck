@@ -12,4 +12,4 @@ Lighthouse Accessibility Report Score 100
 - created a graph for the results
 - made it so pictures do not show up back to back
 - added local storage
-- updated some css
+--  updated some css
