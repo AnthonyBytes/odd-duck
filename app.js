@@ -15,6 +15,15 @@ let state = {
   selected: [],
 };
 
+let storedState = localStorage.getItem('state');
+if (storedState) {
+  state = JSON.parse(storedState);
+}
+
+function saveToLocalStorage() {
+  localStorage.setItem('state', JSON.stringify(state));
+}
+
 function Pictures(name, image) {
   this.name = name;
   this.image = image;
@@ -29,19 +38,9 @@ function renderPictures(){
   }
 
   let picture1 = randomPicture();
-  // while (state.selected.includes(picture1)) {
-  //   picture1 = randomPicture();
-  // }
   let picture2 = randomPicture();
-  // while (state.selected.includes(picture2)) {
-  //   picture2 = randomPicture();
-  // }
   let picture3 = randomPicture();
-  // while (state.selected.includes(picture3)) {
-  //   picture3 = randomPicture();
-  // }
 
-  //if any of the pictures selected were in the last selected, re-roll it
   while(picture1 === picture2 || picture2 === picture3 || picture3 === picture1 || state.selected.includes(picture1) || state.selected.includes(picture2) || state.selected.includes(picture3)) {
     picture1 = randomPicture();
     picture2 = randomPicture();
@@ -52,15 +51,6 @@ function renderPictures(){
 
   state.selected.push(picture1, picture2, picture3);
   console.log(state.selected);
-  // while(picture2 === picture3 || picture3 === picture1) {
-  //   picture3 = randomPicture();
-  // }
-
-  // while(picture1.name === state.lastSelected || picture2.name === state.lastSelected || picture3.name === state.lastSelected) {
-  //   picture1 = randomPicture();
-  //   picture2 = randomPicture();
-  //   picture3 = randomPicture();
-  // }
 
   image1.src = state.allPictures[picture1].image;
   image1.alt = state.allPictures[picture1].name;
@@ -75,6 +65,7 @@ function renderPictures(){
   state.allPictures[picture2].views++;
   state.allPictures[picture3].views++;
 
+  saveToLocalStorage();
 }
 
 function renderResultsButton(){
@@ -91,38 +82,39 @@ function renderResults() {
     list.appendChild(li);
   });
   resultsContainer.appendChild(list);
+
   const ctx = document.getElementById('myChart').getContext('2d');
   const chart = new Chart(ctx, {
-    type: 'bar', // Define chart type
+    type: 'bar',
     data: {
-      labels: ['bag', 'banana', 'bathroom', 'boots', 'breakfast', 'bubblegum', 'chair', 'cthulhu', 'dog-duck', 'dragon', 'pen', 'pet-sweep', 'scissors', 'shark'], // X-axis labels
+      labels: state.allPictures.map(picture => picture.name),
       datasets: [{
         label: 'Views',
-        data: [5, 3, 5, 5, 5, 5, 3, 4, 5, 4, 4, 4, 3, 3], // Data for views
-        backgroundColor: 'rgba(0, 123, 255, 0.5)', // Set the background color with some transparency
-        borderColor: 'rgb(0, 123, 255)',
+        data: state.allPictures.map(picture => picture.views),
+        backgroundColor: 'red',
+        borderColor: 'black',
         borderWidth: 1
       }, {
         label: 'Votes',
-        data: [2, 1, 3, 1, 0, 1, 3, 2, 0, 3, 1, 1, 2, 0], // Data for votes
-        backgroundColor: 'rgba(255, 99, 132, 0.5)', // Different color for votes
-        borderColor: 'rgb(255, 99, 132)',
+        data: state.allPictures.map(picture => picture.votes),
+        backgroundColor: 'blue',
+        borderColor: 'black',
         borderWidth: 1
       }]
     },
     options: {
       scales: {
         y: {
-          beginAtZero: true // Start the y-axis at 0
+          beginAtZero: true
         }
       }
     }
   });
-};
+  saveToLocalStorage();
+}
 
 function handleClick(event) {
   console.log(state);
-  // state.lastSelected = [];
   let pictureName = event.target.alt;
   for (let i = 0; i < state.allPictures.length; i++) {
     if(pictureName === state.allPictures[i].name) {
@@ -137,7 +129,7 @@ function handleClick(event) {
   } else {
     renderPictures();
   }
-  // state.lastSelected.push(pictureName);
+  saveToLocalStorage();
 }
 
 function picturesListener() {
